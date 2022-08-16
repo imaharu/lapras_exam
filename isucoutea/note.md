@@ -11,3 +11,19 @@ Result: xx.yyyyyyyyyyyyyy sec  アプリケーションの XX 部分の N+1 を�
 
 
 ### あなたの作業記録
+
+#### 初期値
+
+```
+Request:  GET / 7.7204455850005616 sec 
+Request:  GET /?page=80000 7.9497054630001 sec 
+Request:  POST / 7.618097132000003 sec 
+Request:  GET /?page=25&query=平塚市 20.0106070009997 sec (timeout)
+Request:  GET /?page=858&query=日本 20.00820201500028 sec (timeout)
+Request:  GET / 19.722368630000346 sec 
+Request:  POST / 14.132249412999954 sec 
+Request:  GET /?query=ミャメビエコフ茶 20.02062541900068 sec (timeout)
+Request:  GET /?query=存在しないお茶 20.016748229999394 sec (timeout)
+Request:  GET / 20.00727802399979 sec (timeout)
+Result: 157.20687530000032 sec
+```
