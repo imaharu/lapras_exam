@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: ./docker/service
+    command: poetry run uwsgi /app/application/app.ini
+    working_dir: /app
+    environment:
+      - PYTHONPATH=/app/application
+    volumes:
+      - .:/app
+    ports:
+      - "80:80"
+
+  paymentmock:
+    build: ../docker/paymentmock
+    command: 'python /app/app.py'
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ../docker/paymentmock/mockserver:/app
+    ports:
+      - "8810:80"

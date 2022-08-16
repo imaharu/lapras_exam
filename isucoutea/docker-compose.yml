@@ -1,0 +1,20 @@
+version: '3.0'
+services:
+  app:
+    build:
+      context: .
+    command: /home/scouty/docker/start_app.sh
+    volumes:
+      - ./docker:/home/scouty/docker
+      - ./webapp:/home/scouty/webapp
+      - ./admin/config/bashrc:/home/scouty/.bashrc
+      - ./admin/config/nginx.conf:/etc/nginx/nginx.conf
+    environment:
+      ISUCOUTEA_RUN_TYPE: "${ISUCOUTEA_RUN_TYPE-run_python}"
+    ports:
+      - "80:80"
+  benchmark:
+    image: python:3-slim
+    command: tail -f /dev/null
+    volumes:
+      - ./benchmark:/benchmark
