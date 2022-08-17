@@ -57,33 +57,33 @@ class Isucoutea::WebApp < Sinatra::Base
     query = params[:query] || ''
     offset = (page - 1) * TEAS_PER_PAGE
 
-    teas = db.xquery('SELECT * FROM teas ORDER BY id DESC')
-
     teas_match = []
-    teas.each do |tea|
-      if query == ''
+    teas = db.xquery("SELECT * FROM teas ORDER BY id DESC LIMIT #{TEAS_PER_PAGE} OFFSET #{offset}")
+    if query == ''
+      teas.each do |tea|
         teas_match.push(tea)
-        next
       end
-
-      tea[:country] = get_country(tea)
-      if query == tea[:name] || query == tea[:location] || query == tea[:country]
-        teas_match.push(tea)
+    else
+      teas.each do |tea|
+        tea[:country] = get_country(tea)
+        if query == tea[:name] || query == tea[:location] || query == tea[:country]
+          teas_match.push(tea)
+        end
       end
     end
 
     teas_display = []
-    teas_match.each_with_index do |tea, i|
-      if offset <= i && i < offset + TEAS_PER_PAGE
-        tea[:country] = get_country(tea)
-        tea[:description] = tea[:description].length > 100 ? tea[:description][0, 100] + '...' : tea[:description]
-        teas_display.push(tea)
-      end
+    teas_match.each do |tea|
+      tea[:country] = get_country(tea)
+      tea[:description] = tea[:description].length > 100 ? tea[:description][0, 100] + '...' : tea[:description]
+      teas_display.push(tea)
     end
 
     first_page = 1
     current_page = page
-    last_page = (teas_match.length / (TEAS_PER_PAGE * 1.0)).ceil
+
+    teas_count = db.xquery("SELECT count(id) as teas_count FROM teas").first[:teas_count]
+    last_page = (teas_count / (TEAS_PER_PAGE * 1.0)).ceil
 
     erb :index, locals: {
       teas: teas_display,

@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-run_type="${ISUCOUTEA_RUN_TYPE:-"run_python"}"
+run_type="${ISUCOUTEA_RUN_TYPE:-"run_ruby"}"
 
 check_message="start application..."
 
